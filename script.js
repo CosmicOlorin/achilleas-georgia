@@ -1,4 +1,4 @@
-document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css"><link rel="stylesheet" href="contrast.css"><link rel="stylesheet" href="responsive.css">');
+document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css"><link rel="stylesheet" href="contrast.css"><link rel="stylesheet" href="responsive.css?v=22">');
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 window.scrollTo(0,0);window.addEventListener('pageshow',()=>window.scrollTo(0,0));window.addEventListener('beforeunload',()=>window.scrollTo(0,0));
 const ENDPOINT='https://script.google.com/macros/s/AKfycbyx-z_paY1vRoWfbs9kJOEYdmHj7K0cidVq695U_TOFav64Dj_Vds524-MV3NNwxsCIJg/exec';
