@@ -20,3 +20,14 @@ footer.section{background:linear-gradient(145deg,#415847,#24382e)!important}foot
 .floral-section:before,.floral-section:after{display:none!important}.photo-panel{background-image:url('bouquet.jpg')!important;background-repeat:no-repeat!important;background-position:center!important;background-size:cover!important}
 .gift-intro{line-height:1.9!important}.no-gift{display:block;margin:42px auto 0!important;line-height:1.7}.gift-space{height:1.7em}
 @media(max-width:760px){.date-stack{line-height:.67!important}.date-stack b{font-size:clamp(3.55rem,16vw,5.5rem)!important;margin:-.16em 0 .03em!important}.date-stack i{font-size:2.1rem!important;margin:-.5em 0 .02em!important}.date-stack .bride-name{margin-top:.7em!important}.date-stack span{font-size:clamp(7.4rem,37vw,12rem)!important}.gift-options{display:grid!important;grid-template-columns:1fr!important}.gift-options .bank-card{width:100%;max-width:none;flex:auto}.scroll-flower{width:150px}.letter{width:min(88vw,520px)!important}}
+
+/* Exact reference envelope artwork; fades away while the real invitation rises. */
+.envelope:before{content:''!important;position:absolute!important;inset:0!important;z-index:9!important;background:#ebe5dd url('envelope-ag.png?v=1') center/contain no-repeat!important;opacity:1!important;mix-blend-mode:normal!important;transition:opacity .8s .45s,transform 1.1s .25s!important}
+.envelope.is-open:before{opacity:0!important;transform:scale(1.015)!important}
+.tap{display:none!important}
+
+/* One equal vertical rhythm for every hero item. */
+.date-stack{display:grid!important;grid-template-columns:1fr!important;justify-items:center!important;align-content:center!important;gap:clamp(12px,2.1vh,28px)!important;line-height:1!important}
+.date-stack span,.date-stack b,.date-stack i,.date-stack .bride-name{margin:0!important;line-height:.82!important}
+.date-stack span{font-size:clamp(6.5rem,15vw,12rem)!important}.date-stack b{font-size:clamp(3.5rem,7.5vw,6rem)!important}.date-stack i{font-size:clamp(2rem,4vw,3.4rem)!important}
+@media(max-width:760px){.date-stack{gap:clamp(9px,1.6vh,16px)!important}.date-stack span{font-size:clamp(5.4rem,26vw,8rem)!important}.date-stack b{font-size:clamp(3rem,13vw,4.6rem)!important}.date-stack i{font-size:2rem!important}}
