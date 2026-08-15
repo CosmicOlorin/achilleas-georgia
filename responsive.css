@@ -1,0 +1,15 @@
+.intro{padding:0!important;overflow:hidden}.intro-photo,.intro-kicker{display:none!important}
+.envelope{width:100vw!important;height:100svh!important;max-width:none!important;max-height:none!important;aspect-ratio:auto!important;border-radius:0!important;box-shadow:none!important}
+.env-back{background:linear-gradient(120deg,#d8c8b4,#f7f0e6 42%,#d1bea8)}
+.flap{inset:0 0 50%!important;clip-path:polygon(0 0,100% 0,50% 100%)!important;background:linear-gradient(145deg,#eadfce,#cdbba5)!important;transform-origin:top center!important}
+.flap:after{inset:3% 5% 8%!important;background:url('flower-sprig.png') 18% 25%/25% auto no-repeat,url('flower-sprig.png') 82% 62%/28% auto no-repeat!important;filter:grayscale(1) sepia(.25)!important;opacity:.18!important;mix-blend-mode:multiply}
+.env-front{clip-path:polygon(0 43%,50% 67%,100% 43%,100% 100%,0 100%)!important;background:linear-gradient(145deg,#eee4d6 0 50%,#dfd1c0 50%)!important}
+.seal{top:50%!important;left:50%!important;transform:translate(-50%,-50%)!important;width:clamp(88px,12vw,136px)!important;height:clamp(88px,12vw,136px)!important;font-size:clamp(1.25rem,2.3vw,2rem)!important;letter-spacing:.14em!important;box-shadow:0 10px 28px #49321c66,inset 2px 2px 7px #ffd2a955,inset -4px -5px 8px #61291488!important}
+.tap{z-index:10;bottom:4vh!important;color:#fff!important;text-shadow:0 2px 12px #38281f!important}
+.letter{width:min(70vw,560px)!important;height:min(82svh,790px)!important;left:50%!important;top:50%!important;transform:translate(-50%,-38%)!important}.envelope.is-open .letter{transform:translate(-50%,-58%)!important}
+.date-stack{display:flex!important;flex-direction:column;align-items:center;line-height:.78!important}.date-stack span{display:block;margin:-.04em 0}
+.hero-names{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);display:grid;grid-template-columns:auto auto auto;align-items:center;gap:clamp(18px,4vw,64px);white-space:nowrap;z-index:4}.hero-names b{margin:0!important;font:400 clamp(3.7rem,9vw,8rem)/1 'Great Vibes'!important}.hero-names i{margin:0!important;font:400 clamp(2rem,4vw,3.8rem)/1 'Great Vibes'!important;color:var(--terra)!important}
+.scroll-flower{position:absolute;z-index:3;width:clamp(130px,22vw,330px);height:auto;will-change:transform;pointer-events:none}.flower-top{left:2vw;top:3vh;transform-origin:35% 45%}.flower-bottom{right:2vw;bottom:3vh;transform-origin:65% 55%}.down-cue,.corner{display:none!important}
+.gift-options{display:flex!important;justify-content:center;align-items:stretch;gap:5%!important}.gift-options .bank-card{flex:0 0 45%;width:45%;margin:0!important}
+footer.section{background:linear-gradient(145deg,#415847,#24382e)!important}footer.section:before{background:none!important}
+@media(max-width:760px){.hero-names{grid-template-columns:1fr;gap:0;text-align:center}.hero-names b{font-size:clamp(3.6rem,17vw,5.6rem)!important}.hero-names i{font-size:2.1rem!important}.gift-options{display:grid!important;grid-template-columns:1fr!important}.gift-options .bank-card{width:100%;max-width:none;flex:auto}.scroll-flower{width:150px}.letter{width:min(88vw,520px)!important}}

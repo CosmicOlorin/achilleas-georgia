@@ -1,4 +1,6 @@
-document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css"><link rel="stylesheet" href="contrast.css">');
+document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css"><link rel="stylesheet" href="contrast.css"><link rel="stylesheet" href="responsive.css">');
+if('scrollRestoration' in history)history.scrollRestoration='manual';
+window.scrollTo(0,0);window.addEventListener('pageshow',()=>window.scrollTo(0,0));window.addEventListener('beforeunload',()=>window.scrollTo(0,0));
 const ENDPOINT='__APPS_SCRIPT_WEB_APP_URL__';
 const $=s=>document.querySelector(s);let audioCtx,loopTimer,isPlaying=false;
 $('#music').style.zIndex='9999';$('#music').style.pointerEvents='auto';
@@ -17,3 +19,4 @@ $('.no-gift').addEventListener('click',async()=>{await send({action:'gift_click'
 $('#wishForm').addEventListener('submit',async e=>{e.preventDefault();const s=$('#wishStatus');s.textContent='Αποστολή…';try{await send({action:'wish',...Object.fromEntries(new FormData(e.target))});s.textContent='Η ευχή σας στάλθηκε. Ευχαριστούμε!';e.target.reset()}catch{s.textContent='Δεν έγινε η αποστολή. Δοκιμάστε ξανά.'}});
 $('.soft-button').addEventListener('click',()=>alert('Ο σύνδεσμος του ψηφιακού άλμπουμ θα ενεργοποιηθεί σύντομα.'));
 const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed');revealObserver.unobserve(entry.target)}}),{threshold:.14});document.querySelectorAll('.reveal-up,.reveal-down').forEach(el=>revealObserver.observe(el));
+const scrollFlowers=[...document.querySelectorAll('.scroll-flower')];let flowerFrame=0;function moveFlowers(){flowerFrame=0;const y=window.scrollY;scrollFlowers.forEach((el,i)=>{const base=Number(el.dataset.base||0),direction=i%2?-1:1,rotation=base+direction*y*.055,scale=1+Math.min(y,1800)/6000;el.style.transform=`rotate(${rotation}deg) scale(${scale})`})}window.addEventListener('scroll',()=>{if(!flowerFrame)flowerFrame=requestAnimationFrame(moveFlowers)},{passive:true});moveFlowers();
