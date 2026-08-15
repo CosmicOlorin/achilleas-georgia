@@ -1,4 +1,4 @@
-document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css">');
+document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css"><link rel="stylesheet" href="contrast.css">');
 const ENDPOINT='__APPS_SCRIPT_WEB_APP_URL__';
 const $=s=>document.querySelector(s);let audioCtx,loopTimer,isPlaying=false;
 $('#music').style.zIndex='9999';$('#music').style.pointerEvents='auto';
