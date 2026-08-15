@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#53695b">
+  <title>Αχιλλέας & Γεωργία | 08.11.2026</title>
+  <meta name="description" content="Το προσκλητήριο γάμου του Αχιλλέα και της Γεωργίας">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=GFS+Didot&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="locked">
+  <div class="grain"></div>
+  <section class="intro" id="intro" aria-label="Άνοιγμα προσκλητηρίου">
+    <div class="sprig sprig-a">❧</div><div class="sprig sprig-b">❧</div>
+    <p class="eyebrow">ΣΑΣ ΠΡΟΣΚΑΛΟΥΜΕ ΣΤΟΝ ΓΑΜΟ ΜΑΣ</p>
+    <button class="envelope" id="envelope" aria-label="Ανοίξτε το προσκλητήριο">
+      <span class="envelope-back"></span><span class="letter"><b>Αχιλλέας</b><i>&</i><b>Γεωργία</b><small>08 · 11 · 2026</small></span>
+      <span class="envelope-front"></span><span class="flap"></span><span class="seal">ΑΓ</span>
+    </button>
+    <p class="tap">πατήστε τον φάκελο</p>
+  </section>
+
+  <main id="content" aria-hidden="true">
+    <header class="hero">
+      <nav><a href="#story">Η μέρα μας</a><a href="#rsvp">RSVP</a><a href="#gift">Δώρο</a></nav>
+      <div class="hero-copy"><p class="eyebrow">ΜΑΖΙ ΓΙΑ ΠΑΝΤΑ</p><h1>Αχιλλέας <em>&</em><br>Γεωργία</h1><p class="date">Κυριακή, 8 Νοεμβρίου 2026</p></div>
+      <a class="scroll" href="#story">↓</a>
+    </header>
+
+    <section class="paper" id="story">
+      <p class="eyebrow">Η ΠΙΟ ΟΜΟΡΦΗ ΜΑΣ ΜΕΡΑ</p><h2>Σας περιμένουμε<br>να τη ζήσουμε μαζί</h2>
+      <div class="details">
+        <article><span>01</span><h3>Το μυστήριο</h3><p><strong>13:00</strong><br>Ιερός Ναός Αγίου Νικολάου<br>Λαγυνά Θεσσαλονίκης</p><a class="text-link" href="https://www.google.com/maps/search/?api=1&query=%CE%99%CE%B5%CF%81%CF%8C%CF%82+%CE%9D%CE%B1%CF%8C%CF%82+%CE%91%CE%B3%CE%AF%CE%BF%CF%85+%CE%9D%CE%B9%CE%BA%CE%BF%CE%BB%CE%AC%CE%BF%CF%85+%CE%9B%CE%B1%CE%B3%CF%85%CE%BD%CE%AC" target="_blank" rel="noopener">Οδηγίες ↗</a></article>
+        <article><span>02</span><h3>Η ημερομηνία</h3><p><strong>08 · 11 · 2026</strong><br>Κρατήστε τη μέρα ελεύθερη.<br>Ανυπομονούμε να σας δούμε.</p><a class="text-link" id="calendar" href="#">Προσθήκη στο ημερολόγιο ↓</a></article>
+      </div>
+      <div class="countdown" aria-label="Αντίστροφη μέτρηση"><div><b id="days">—</b><small>μέρες</small></div><div><b id="hours">—</b><small>ώρες</small></div><div><b id="minutes">—</b><small>λεπτά</small></div><div><b id="seconds">—</b><small>δευτ.</small></div></div>
+    </section>
+
+    <section class="sage" id="rsvp"><div class="section-copy"><p class="eyebrow">RSVP</p><h2>Θα είστε<br>μαζί μας;</h2><p>Παρακαλούμε απαντήστε για να οργανώσουμε κάθε λεπτομέρεια με φροντίδα.</p></div>
+      <form id="rsvpForm"><label>Ονοματεπώνυμο<input name="name" required autocomplete="name"></label><label>Θα παρευρεθείτε;<select name="attendance" required><option value="">Επιλέξτε</option><option>Ναι, με χαρά!</option><option>Δυστυχώς όχι</option></select></label><label>Αριθμός ατόμων<input name="guests" type="number" min="1" max="10" value="1"></label><label>Μήνυμα ή διατροφική ανάγκη<textarea name="message" rows="3"></textarea></label><button class="primary" type="submit">Αποστολή απάντησης</button><p class="form-status" id="formStatus" role="status"></p></form>
+    </section>
+
+    <section class="paper gift" id="gift"><p class="eyebrow">ΛΙΣΤΑ ΓΑΜΟΥ</p><h2>Η παρουσία σας<br>είναι το δώρο μας</h2><p>Αν επιθυμείτε να μας προσφέρετε κάτι επιπλέον, μπορείτε να επιλέξετε έναν από τους παρακάτω τρόπους.</p>
+      <div class="gift-grid"><button class="gift-card" data-gift="IBAN"><span>Τραπεζική κατάθεση</span><b>IBAN</b><small>Πατήστε για πληροφορίες</small></button><button class="gift-card" data-gift="IRIS"><span>Άμεση μεταφορά</span><b>IRIS</b><small>Πατήστε για πληροφορίες</small></button><button class="gift-card" data-gift="ΟΧΙ"><span>Μόνο οι ευχές σας</span><b>Με αγάπη</b><small>Δεν επιθυμώ πληροφορίες δώρου</small></button></div>
+      <div class="gift-detail" id="giftDetail" hidden><button id="closeGift" aria-label="Κλείσιμο">×</button><p id="giftDetailText"></p></div>
+    </section>
+    <footer><span>Α</span><p>Σας περιμένουμε με χαρά</p><span>Γ</span></footer>
+  </main>
+  <button class="music" id="music" aria-label="Παύση ή αναπαραγωγή μουσικής"><span>♫</span></button>
+  <script src="script.js"></script>
+</body></html>
