@@ -1,0 +1,1 @@
+.letter{opacity:0;transition:none}.envelope.is-open .letter{opacity:1;transition:transform 1.25s 1.35s,opacity .7s 1.2s}.flap:after{content:'';inset:7% 5% 15%;background:linear-gradient(#f6f2e9cc,#f6f2e9cc),url('bouquet.jpg') center/cover;filter:grayscale(1);opacity:.15;mix-blend-mode:multiply}
