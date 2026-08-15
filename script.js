@@ -14,7 +14,17 @@ const wedding=new Date('2026-11-08T13:00:00+02:00');function tick(){const d=Math
 const visitorId=localStorage.weddingVisitorId||crypto.randomUUID();localStorage.weddingVisitorId=visitorId;
 async function send(data){if(ENDPOINT.startsWith('__')){console.info('Pending Google endpoint',data);return}const body=new URLSearchParams({...data,visitorId,page:location.href});await fetch(ENDPOINT,{method:'POST',mode:'no-cors',body})}
 $('#rsvpForm').addEventListener('submit',async e=>{e.preventDefault();const s=$('#formStatus'),b=e.target.querySelector('button');b.disabled=true;s.textContent='Αποστολή…';try{await send({action:'rsvp',...Object.fromEntries(new FormData(e.target))});s.textContent='Ευχαριστούμε! Η απάντησή σας καταγράφηκε.';e.target.reset()}catch{s.textContent='Δεν έγινε η αποστολή. Δοκιμάστε ξανά.'}finally{b.disabled=false}});
-document.querySelectorAll('.copy-gift').forEach(button=>button.addEventListener('click',async e=>{const value=e.currentTarget.dataset.copy,gift=e.currentTarget.dataset.gift;await navigator.clipboard.writeText(value);e.currentTarget.parentElement.querySelector('.copy-status').textContent='✓ Αντιγράφηκε!';await send({action:'gift_click',gift})}));
+function legacyCopy(value){const input=document.createElement('textarea');input.value=value;input.setAttribute('readonly','');input.style.cssText='position:fixed;opacity:0;pointer-events:none';document.body.appendChild(input);input.select();const copied=document.execCommand('copy');input.remove();return copied}
+document.querySelectorAll('.copy-gift').forEach(button=>button.addEventListener('click',async e=>{
+  const current=e.currentTarget,value=current.dataset.copy,gift=current.dataset.gift,status=current.closest('.bank-card').querySelector('.copy-status');
+  status.textContent='Γίνεται αντιγραφή…';
+  const tracking=send({action:'gift_click',gift}).catch(()=>{});
+  let copied=false;
+  try{await navigator.clipboard.writeText(value);copied=true}catch{copied=legacyCopy(value)}
+  status.textContent=copied?'✓ Αντιγράφηκε!':'Πατήστε παρατεταμένα για αντιγραφή';
+  status.classList.toggle('copied',copied);
+  await tracking;
+}));
 $('.no-gift').addEventListener('click',async()=>{await send({action:'gift_click',gift:'ΟΧΙ'});$('.no-gift').textContent='Σας ευχαριστούμε θερμά ♥'});
 $('#wishForm').addEventListener('submit',async e=>{e.preventDefault();const s=$('#wishStatus');s.textContent='Αποστολή…';try{await send({action:'wish',...Object.fromEntries(new FormData(e.target))});s.textContent='Η ευχή σας στάλθηκε. Ευχαριστούμε!';e.target.reset()}catch{s.textContent='Δεν έγινε η αποστολή. Δοκιμάστε ξανά.'}});
 const uploadButton=$('.soft-button'),uploadStatus=$('#uploadStatus');

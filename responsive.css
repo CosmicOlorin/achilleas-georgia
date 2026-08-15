@@ -50,3 +50,5 @@ footer.section{background:linear-gradient(145deg,#415847,#24382e)!important}foot
 .date-stack b{font-family:'GFS Olga','Segoe Script',cursive!important;font-weight:400!important;font-style:italic!important;color:#4c6550!important;letter-spacing:.01em!important}
 .date-stack .middle-date i{font-family:'GFS Olga','Segoe Script',cursive!important;font-size:clamp(1.35rem,2.4vw,2rem)!important;color:#4c6550!important;transform:none!important}
 @media(max-width:760px){.date-stack .middle-date i{font-size:clamp(1.15rem,5vw,1.55rem)!important}}
+.copy-status{min-height:1.4em!important;transition:color .2s,transform .2s}.copy-status.copied{color:#405746!important;font-weight:600!important;transform:scale(1.04)}
+.phone-links a{display:flex!important;min-width:210px;flex-direction:column!important;align-items:center!important;gap:7px!important}.phone-links a b{font-size:1.08rem}.phone-links a span{display:block;letter-spacing:.08em}
