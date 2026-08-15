@@ -1,7 +1,7 @@
 document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css"><link rel="stylesheet" href="contrast.css"><link rel="stylesheet" href="responsive.css">');
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 window.scrollTo(0,0);window.addEventListener('pageshow',()=>window.scrollTo(0,0));window.addEventListener('beforeunload',()=>window.scrollTo(0,0));
-const ENDPOINT='__APPS_SCRIPT_WEB_APP_URL__';
+const ENDPOINT='https://script.google.com/macros/s/AKfycbyx-z_paY1vRoWfbs9kJOEYdmHj7K0cidVq695U_TOFav64Dj_Vds524-MV3NNwxsCIJg/exec';
 const $=s=>document.querySelector(s);let audioCtx,loopTimer,isPlaying=false;
 $('#music').style.zIndex='9999';$('#music').style.pointerEvents='auto';
 function note(freq,when,d=.9){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.001,when);g.gain.linearRampToValueAtTime(.035,when+.08);g.gain.exponentialRampToValueAtTime(.001,when+d);o.connect(g).connect(audioCtx.destination);o.start(when);o.stop(when+d)}
