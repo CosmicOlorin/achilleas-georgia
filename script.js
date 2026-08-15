@@ -1,17 +1,19 @@
 document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css">');
 const ENDPOINT='__APPS_SCRIPT_WEB_APP_URL__';
 const $=s=>document.querySelector(s);let audioCtx,loopTimer,isPlaying=false;
+$('#music').style.zIndex='9999';$('#music').style.pointerEvents='auto';
 function note(freq,when,d=.9){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.001,when);g.gain.linearRampToValueAtTime(.035,when+.08);g.gain.exponentialRampToValueAtTime(.001,when+d);o.connect(g).connect(audioCtx.destination);o.start(when);o.stop(when+d)}
 function loop(){if(!isPlaying)return;const n=audioCtx.currentTime;[261.6,329.6,392,523.2,440,349.2,392,329.6].forEach((f,i)=>note(f,n+i*.55));loopTimer=setTimeout(loop,4400)}
-function play(){audioCtx||=new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();isPlaying=true;$('#music').classList.add('playing');loop()}
-function pause(){isPlaying=false;clearTimeout(loopTimer);$('#music').classList.remove('playing')}
+function play(){audioCtx||=new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();isPlaying=true;$('#music').classList.add('playing');$('#music').classList.remove('muted');$('#music').textContent='♫';loop()}
+function pause(){isPlaying=false;clearTimeout(loopTimer);if(audioCtx){audioCtx.close();audioCtx=null}$('#music').classList.remove('playing');$('#music').classList.add('muted');$('#music').textContent='♪'}
 $('#envelope').addEventListener('click',()=>{$('#envelope').classList.add('is-open');play();setTimeout(()=>{$('#intro').classList.add('open');$('#content').classList.add('visible');$('#content').removeAttribute('aria-hidden');document.body.classList.remove('locked');$('#music').classList.add('show')},3000)},{once:true});
 $('#music').addEventListener('click',()=>isPlaying?pause():play());
 const wedding=new Date('2026-11-08T13:00:00+02:00');function tick(){const d=Math.max(0,wedding-Date.now()),v=[Math.floor(d/864e5),Math.floor(d/36e5)%24,Math.floor(d/6e4)%60,Math.floor(d/1e3)%60];['days','hours','minutes','seconds'].forEach((id,i)=>$('#'+id).textContent=String(v[i]).padStart(2,'0'))}tick();setInterval(tick,1000);
 const visitorId=localStorage.weddingVisitorId||crypto.randomUUID();localStorage.weddingVisitorId=visitorId;
 async function send(data){if(ENDPOINT.startsWith('__')){console.info('Pending Google endpoint',data);return}const body=new URLSearchParams({...data,visitorId,page:location.href});await fetch(ENDPOINT,{method:'POST',mode:'no-cors',body})}
 $('#rsvpForm').addEventListener('submit',async e=>{e.preventDefault();const s=$('#formStatus'),b=e.target.querySelector('button');b.disabled=true;s.textContent='Αποστολή…';try{await send({action:'rsvp',...Object.fromEntries(new FormData(e.target))});s.textContent='Ευχαριστούμε! Η απάντησή σας καταγράφηκε.';e.target.reset()}catch{s.textContent='Δεν έγινε η αποστολή. Δοκιμάστε ξανά.'}finally{b.disabled=false}});
-$('.iban').addEventListener('click',async e=>{const iban=e.currentTarget.dataset.iban;await navigator.clipboard.writeText(iban);$('#copyStatus').textContent='✓ Το IBAN αντιγράφηκε!';await send({action:'gift_click',gift:'IBAN'})});
+document.querySelectorAll('.copy-gift').forEach(button=>button.addEventListener('click',async e=>{const value=e.currentTarget.dataset.copy,gift=e.currentTarget.dataset.gift;await navigator.clipboard.writeText(value);e.currentTarget.parentElement.querySelector('.copy-status').textContent='✓ Αντιγράφηκε!';await send({action:'gift_click',gift})}));
 $('.no-gift').addEventListener('click',async()=>{await send({action:'gift_click',gift:'ΟΧΙ'});$('.no-gift').textContent='Σας ευχαριστούμε θερμά ♥'});
 $('#wishForm').addEventListener('submit',async e=>{e.preventDefault();const s=$('#wishStatus');s.textContent='Αποστολή…';try{await send({action:'wish',...Object.fromEntries(new FormData(e.target))});s.textContent='Η ευχή σας στάλθηκε. Ευχαριστούμε!';e.target.reset()}catch{s.textContent='Δεν έγινε η αποστολή. Δοκιμάστε ξανά.'}});
 $('.soft-button').addEventListener('click',()=>alert('Ο σύνδεσμος του ψηφιακού άλμπουμ θα ενεργοποιηθεί σύντομα.'));
+const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed');revealObserver.unobserve(entry.target)}}),{threshold:.14});document.querySelectorAll('.reveal-up,.reveal-down').forEach(el=>revealObserver.observe(el));
