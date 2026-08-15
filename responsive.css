@@ -22,7 +22,8 @@ footer.section{background:linear-gradient(145deg,#415847,#24382e)!important}foot
 @media(max-width:760px){.date-stack{line-height:.67!important}.date-stack b{font-size:clamp(3.55rem,16vw,5.5rem)!important;margin:-.16em 0 .03em!important}.date-stack i{font-size:2.1rem!important;margin:-.5em 0 .02em!important}.date-stack .bride-name{margin-top:.7em!important}.date-stack span{font-size:clamp(7.4rem,37vw,12rem)!important}.gift-options{display:grid!important;grid-template-columns:1fr!important}.gift-options .bank-card{width:100%;max-width:none;flex:auto}.scroll-flower{width:150px}.letter{width:min(88vw,520px)!important}}
 
 /* Exact reference envelope artwork; fades away while the real invitation rises. */
-.envelope:before{content:''!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:9!important;background-color:#ebe5dd!important;background-image:url('envelope-ag.png?v=1')!important;background-position:center!important;background-repeat:no-repeat!important;background-size:100% 100%!important;opacity:1!important;mix-blend-mode:normal!important;transition:opacity .8s .45s,transform 1.1s .25s!important}
+.envelope:before{content:''!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:9!important;background-color:#ebe5dd!important;background-image:url('envelope-ag-landscape.png?v=1')!important;background-position:center!important;background-repeat:no-repeat!important;background-size:cover!important;opacity:1!important;mix-blend-mode:normal!important;transition:opacity .8s .45s,transform 1.1s .25s!important}
+@media (max-aspect-ratio: 4/5){.envelope:before{background-image:url('envelope-ag.png?v=2')!important;background-size:cover!important}}
 .intro{inset:0!important;width:100vw!important;max-width:none!important;margin:0!important;padding:0!important}.envelope{position:absolute!important;inset:0!important;width:100vw!important;height:100svh!important;max-width:none!important;max-height:none!important;margin:0!important;border-radius:0!important}
 .envelope.is-open:before{opacity:0!important;transform:scale(1.015)!important}
 .tap{display:none!important}
@@ -40,3 +41,12 @@ footer.section{background:linear-gradient(145deg,#415847,#24382e)!important}foot
 .date-stack b{font:400 clamp(4rem,8vw,6.8rem)/.88 'Great Vibes',cursive!important;color:#4c6550!important;white-space:nowrap!important}
 .middle-date{position:relative;display:grid;place-items:center}.middle-date>*{grid-area:1/1}.date-stack .middle-date i{z-index:2;font:400 clamp(2.5rem,5vw,4.2rem)/1 'Great Vibes',cursive!important;color:#b75432!important;transform:translateY(.04em)}
 @media(max-width:760px){.date-stack{gap:clamp(10px,1.9vh,17px)!important}.date-stack .hero-number{font-size:clamp(6.2rem,31vw,9rem)!important}.date-stack b{font-size:clamp(3.4rem,15vw,5rem)!important}.date-stack .middle-date i{font-size:clamp(2.2rem,10vw,3rem)!important}}
+
+/* Greek luxury typography: real Greek glyphs, rendered as text rather than an image. */
+@font-face{font-family:'GFS Olga';src:url('GFSOlga.otf?v=1') format('opentype');font-display:swap}
+@font-face{font-family:'GFS Didot';src:url('GFSDidot.otf?v=1') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'GFS Didot';src:url('GFSDidotBold.otf?v=1') format('opentype');font-weight:600;font-display:swap}
+.date-stack .hero-number{font-family:'GFS Didot','Noto Serif',serif!important;font-weight:600!important;color:#d1d9d1!important;letter-spacing:-.045em!important}
+.date-stack b{font-family:'GFS Olga','Segoe Script',cursive!important;font-weight:400!important;font-style:italic!important;color:#4c6550!important;letter-spacing:.01em!important}
+.date-stack .middle-date i{font-family:'GFS Olga','Segoe Script',cursive!important;font-size:clamp(1.35rem,2.4vw,2rem)!important;color:#4c6550!important;transform:none!important}
+@media(max-width:760px){.date-stack .middle-date i{font-size:clamp(1.15rem,5vw,1.55rem)!important}}

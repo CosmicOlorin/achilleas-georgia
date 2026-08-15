@@ -1,4 +1,4 @@
-document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css"><link rel="stylesheet" href="contrast.css"><link rel="stylesheet" href="responsive.css?v=22">');
+document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="fix.css"><link rel="stylesheet" href="contrast.css"><link rel="stylesheet" href="responsive.css?v=25">');
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 window.scrollTo(0,0);window.addEventListener('pageshow',()=>window.scrollTo(0,0));window.addEventListener('beforeunload',()=>window.scrollTo(0,0));
 const ENDPOINT='https://script.google.com/macros/s/AKfycbyx-z_paY1vRoWfbs9kJOEYdmHj7K0cidVq695U_TOFav64Dj_Vds524-MV3NNwxsCIJg/exec';
@@ -17,6 +17,21 @@ $('#rsvpForm').addEventListener('submit',async e=>{e.preventDefault();const s=$(
 document.querySelectorAll('.copy-gift').forEach(button=>button.addEventListener('click',async e=>{const value=e.currentTarget.dataset.copy,gift=e.currentTarget.dataset.gift;await navigator.clipboard.writeText(value);e.currentTarget.parentElement.querySelector('.copy-status').textContent='✓ Αντιγράφηκε!';await send({action:'gift_click',gift})}));
 $('.no-gift').addEventListener('click',async()=>{await send({action:'gift_click',gift:'ΟΧΙ'});$('.no-gift').textContent='Σας ευχαριστούμε θερμά ♥'});
 $('#wishForm').addEventListener('submit',async e=>{e.preventDefault();const s=$('#wishStatus');s.textContent='Αποστολή…';try{await send({action:'wish',...Object.fromEntries(new FormData(e.target))});s.textContent='Η ευχή σας στάλθηκε. Ευχαριστούμε!';e.target.reset()}catch{s.textContent='Δεν έγινε η αποστολή. Δοκιμάστε ξανά.'}});
-$('.soft-button').addEventListener('click',()=>alert('Ο σύνδεσμος του ψηφιακού άλμπουμ θα ενεργοποιηθεί σύντομα.'));
+const uploadButton=$('.soft-button'),uploadStatus=$('#uploadStatus');
+let uploadWidget;
+uploadButton.addEventListener('click',()=>{
+  if(!window.cloudinary){uploadStatus.textContent='Η μεταφόρτωση δεν φορτώθηκε. Ανανεώστε τη σελίδα και δοκιμάστε ξανά.';return}
+  if(!uploadWidget)uploadWidget=window.cloudinary.createUploadWidget({
+    cloudName:'pmmzygig',uploadPreset:'wedding_guests_2026',sources:['local','camera'],multiple:true,
+    clientAllowedFormats:['jpg','jpeg','png','webp','heic'],maxFileSize:15000000,maxFiles:20,
+    showAdvancedOptions:false,showCompletedButton:true,singleUploadAutoClose:false,
+    text:{el:{menu:{files:'Από τη συσκευή',camera:'Κάμερα'},local:{browse:'Επιλογή φωτογραφιών',dd_title_single:'Σύρετε μία φωτογραφία εδώ',dd_title_multi:'Σύρετε φωτογραφίες εδώ'},queue:{title:'Αρχεία για ανέβασμα',title_uploading:'Οι φωτογραφίες ανεβαίνουν',title_uploading_with_counter:'Ανεβαίνουν {{num}} φωτογραφίες',title_uploading_processing:'Γίνεται επεξεργασία',done:'Ολοκληρώθηκε',mini_title:'Ανέβηκαν',mini_title_uploading:'Ανεβαίνουν'},notifications:{general_error:'Κάτι πήγε στραβά. Δοκιμάστε ξανά.',completed:'Η μεταφόρτωση ολοκληρώθηκε.'}}}
+  },(error,result)=>{
+    if(error){uploadStatus.textContent='Δεν ολοκληρώθηκε η μεταφόρτωση. Δοκιμάστε ξανά.';return}
+    if(result&&result.event==='success')uploadStatus.textContent='Η φωτογραφία ανέβηκε. Ευχαριστούμε!';
+    if(result&&result.event==='queues-end')uploadStatus.textContent='Οι φωτογραφίες ανέβηκαν. Ευχαριστούμε!';
+  });
+  uploadWidget.open();
+});
 const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed');revealObserver.unobserve(entry.target)}}),{threshold:.14});document.querySelectorAll('.reveal-up,.reveal-down').forEach(el=>revealObserver.observe(el));
 const scrollFlowers=[...document.querySelectorAll('.scroll-flower')];let flowerFrame=0;function moveFlowers(){flowerFrame=0;const y=window.scrollY;scrollFlowers.forEach((el,i)=>{const base=Number(el.dataset.base||0),direction=i%2?-1:1,rotation=base+direction*y*.055,scale=1+Math.min(y,1800)/6000;el.style.transform=`rotate(${rotation}deg) scale(${scale})`})}window.addEventListener('scroll',()=>{if(!flowerFrame)flowerFrame=requestAnimationFrame(moveFlowers)},{passive:true});moveFlowers();
