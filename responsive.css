@@ -31,3 +31,11 @@ footer.section{background:linear-gradient(145deg,#415847,#24382e)!important}foot
 .date-stack span,.date-stack b,.date-stack i,.date-stack .bride-name{margin:0!important;line-height:.82!important}
 .date-stack span{font-size:clamp(6.5rem,15vw,12rem)!important}.date-stack b{font-size:clamp(3.5rem,7.5vw,6rem)!important}.date-stack i{font-size:clamp(2rem,4vw,3.4rem)!important}
 @media(max-width:760px){.date-stack{gap:clamp(9px,1.6vh,16px)!important}.date-stack span{font-size:clamp(5.4rem,26vw,8rem)!important}.date-stack b{font-size:clamp(3rem,13vw,4.6rem)!important}.date-stack i{font-size:2rem!important}}
+
+/* Final hero composition: 08 / name / 11+& / name / 26. */
+.date-stack{display:grid!important;grid-template-columns:1fr!important;justify-items:center!important;align-content:center!important;gap:clamp(14px,2.5vh,34px)!important;line-height:1!important}
+.date-stack .hero-number,.date-stack b,.date-stack i,.date-stack .bride-name{margin:0!important}
+.date-stack .hero-number{font:300 clamp(7rem,17vw,13rem)/.72 'Noto Serif',serif!important;color:#d5ddd5!important;letter-spacing:-.075em!important}
+.date-stack b{font:400 clamp(4rem,8vw,6.8rem)/.88 'Great Vibes',cursive!important;color:#4c6550!important;white-space:nowrap!important}
+.middle-date{position:relative;display:grid;place-items:center}.middle-date>*{grid-area:1/1}.date-stack .middle-date i{z-index:2;font:400 clamp(2.5rem,5vw,4.2rem)/1 'Great Vibes',cursive!important;color:#b75432!important;transform:translateY(.04em)}
+@media(max-width:760px){.date-stack{gap:clamp(10px,1.9vh,17px)!important}.date-stack .hero-number{font-size:clamp(6.2rem,31vw,9rem)!important}.date-stack b{font-size:clamp(3.4rem,15vw,5rem)!important}.date-stack .middle-date i{font-size:clamp(2.2rem,10vw,3rem)!important}}
