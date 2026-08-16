@@ -24,7 +24,6 @@ document.querySelectorAll('.copy-gift').forEach(button=>button.addEventListener(
   status.classList.toggle('copied',copied);
   await tracking;
 }));
-$('.no-gift').addEventListener('click',async()=>{await send({action:'gift_click',gift:'ΟΧΙ',guestName:localStorage.weddingGuestName||''});$('.no-gift').textContent='Σας ευχαριστούμε θερμά ♥'});
 $('#wishForm').addEventListener('submit',async e=>{e.preventDefault();const s=$('#wishStatus');s.textContent='Αποστολή…';try{await send({action:'wish',...Object.fromEntries(new FormData(e.target))});s.textContent='Η ευχή σας στάλθηκε. Ευχαριστούμε!';e.target.reset()}catch{s.textContent='Δεν έγινε η αποστολή. Δοκιμάστε ξανά.'}});
 const uploadButton=$('.soft-button'),uploadStatus=$('#uploadStatus');
 let uploadWidget;
