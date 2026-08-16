@@ -6,79 +6,75 @@ function doGet() {
   return ContentService.createTextOutput('Wedding endpoint is active');
 }
 
-function ensureSheet_(spreadsheet, name, headers) {
-  const sheet = spreadsheet.getSheetByName(name) || spreadsheet.insertSheet(name);
-  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-  sheet.setFrozenRows(1);
-  return sheet;
-}
-
-function migrateResponses_(spreadsheet) {
-  const sheet = spreadsheet.getSheetByName('Απαντήσεις') || spreadsheet.insertSheet('Απαντήσεις');
-  const lastRow = sheet.getLastRow();
-  const lastColumn = sheet.getLastColumn();
-  if (lastRow < 1 || lastColumn < 1) {
-    sheet.getRange(1, 1, 1, RESPONSE_HEADERS.length).setValues([RESPONSE_HEADERS]);
-    sheet.setFrozenRows(1);
-    return sheet;
-  }
-
-  const oldHeaders = sheet.getRange(1, 1, 1, lastColumn).getDisplayValues()[0];
-  if (oldHeaders.join('|') === RESPONSE_HEADERS.join('|')) return sheet;
-
-  const rows = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, lastColumn).getValues() : [];
-  const column = name => oldHeaders.indexOf(name);
-  const value = (row, name) => column(name) >= 0 ? row[column(name)] : '';
-  const migrated = rows.map(row => {
-    let choice = value(row, 'Επιλογή');
-    if (!choice) {
-      if (value(row, 'Τελευταίο κλικ') === 'IBAN' || value(row, 'IBAN') === 'Ναι') choice = 'IBAN';
-      else if (value(row, 'Τελευταίο κλικ') === 'IRIS' || value(row, 'IRIS') === 'Ναι') choice = 'IRIS';
-      else if (value(row, 'Τελευταίο κλικ') === 'ΟΧΙ' || value(row, 'Δώρο') === 'Όχι') choice = 'ΚΑΝΕΝΑ ΔΩΡΟ';
-      else choice = 'ΚΑΜΙΑ ΕΠΙΛΟΓΗ';
-    }
-    return [
-      value(row, 'Ημερομηνία'), value(row, 'Visitor ID'), value(row, 'Ονοματεπώνυμο'),
-      value(row, 'Τηλέφωνο'), value(row, 'RSVP'), value(row, 'Άτομα'), value(row, 'Μήνυμα'),
-      choice, value(row, 'Ποσό'), value(row, 'Τραπέζι'), value(row, 'Τελευταία ενημέρωση')
-    ];
-  });
-
-  sheet.clearContents();
-  sheet.getRange(1, 1, 1, RESPONSE_HEADERS.length).setValues([RESPONSE_HEADERS]);
-  if (migrated.length) sheet.getRange(2, 1, migrated.length, RESPONSE_HEADERS.length).setValues(migrated);
-  sheet.setFrozenRows(1);
-  return sheet;
-}
-
-function responseRow_(sheet, visitorId) {
-  const last = sheet.getLastRow();
-  if (last < 2) return 0;
-  const ids = sheet.getRange(2, 2, last - 1, 1).getDisplayValues().flat();
-  const index = ids.lastIndexOf(visitorId);
-  return index < 0 ? 0 : index + 2;
-}
-
 function json_(value) {
   return ContentService.createTextOutput(JSON.stringify(value)).setMimeType(ContentService.MimeType.JSON);
 }
 
-function migrateGiftColumns() {
-  const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
-  migrateResponses_(spreadsheet);
+function ensureSheet_(spreadsheet, name, headers) {
+  const sheet = spreadsheet.getSheetByName(name) || spreadsheet.insertSheet(name);
+  if (sheet.getLastRow() === 0) sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  sheet.setFrozenRows(1);
+  return sheet;
+}
+
+function responsesSheet_(spreadsheet) {
+  const sheet = spreadsheet.getSheetByName('Απαντήσεις');
+  if (!sheet) throw new Error('Δεν βρέθηκε η καρτέλα Απαντήσεις.');
+  const headers = sheet.getRange(1, 1, 1, 11).getDisplayValues()[0];
+  if (headers.join('|') !== RESPONSE_HEADERS.join('|')) {
+    throw new Error('Η δομή της καρτέλας Απαντήσεις έχει αλλάξει. Δεν έγινε καμία εγγραφή.');
+  }
+  return sheet;
+}
+
+function responseRow_(sheet, visitorId) {
+  const ids = sheet.getRange(2, 2, sheet.getMaxRows() - 1, 1).getDisplayValues().flat();
+  const index = ids.lastIndexOf(visitorId);
+  return index < 0 ? 0 : index + 2;
+}
+
+function firstEmptyResponseRow_(sheet) {
+  const ids = sheet.getRange(2, 2, sheet.getMaxRows() - 1, 1).getDisplayValues().flat();
+  const index = ids.findIndex(value => !value);
+  if (index >= 0) return index + 2;
+  sheet.insertRowAfter(sheet.getMaxRows());
+  return sheet.getMaxRows();
+}
+
+function sameValues_(current, next) {
+  return current.length === next.length && current.every((value, index) => String(value) === String(next[index]));
+}
+
+function markChanged_(sheet, row) {
+  sheet.getRange(row, 11).setValue(new Date());
+  sheet.getRange(row, 12).setValue(false);
+}
+
+function createResponse_(sheet, visitorId, values) {
+  const row = firstEmptyResponseRow_(sheet);
+  const now = new Date();
+  sheet.getRange(row, 1, 1, 12).setValues([[
+    now, visitorId, values.name || '', values.phone || '', values.attendance || '',
+    values.guests || '', values.message || '', values.choice || 'ΚΑΜΙΑ ΕΠΙΛΟΓΗ',
+    '', '', now, false
+  ]]);
+  return row;
 }
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const p = e.parameter || {};
+    const p = (e && e.parameter) || {};
+    const action = p.action || '';
+    if (!['rsvp', 'gift_click', 'wish'].includes(action)) return json_({ ok: true, ignored: true });
+
     const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
-    const responses = migrateResponses_(spreadsheet);
+    const responses = responsesSheet_(spreadsheet);
     const visitorId = p.visitorId || Utilities.getUuid();
     let row = responseRow_(responses, visitorId);
 
-    if (p.action === 'wish') {
+    if (action === 'wish') {
       let rsvpName = '';
       let rsvpPhone = '';
       if (row) {
@@ -90,23 +86,35 @@ function doPost(e) {
       return json_({ ok: true, sheet: 'Ευχολόγιο' });
     }
 
+    if (action === 'rsvp') {
+      const next = [p.name || '', p.phone || '', p.attendance || '', p.guests || '', p.message || ''];
+      if (!row) {
+        createResponse_(responses, visitorId, { name: next[0], phone: next[1], attendance: next[2], guests: next[3], message: next[4] });
+        return json_({ ok: true, changed: true, sheet: 'Απαντήσεις' });
+      }
+      const current = responses.getRange(row, 3, 1, 5).getDisplayValues()[0];
+      if (!sameValues_(current, next)) {
+        responses.getRange(row, 3, 1, 5).setValues([next]);
+        markChanged_(responses, row);
+        return json_({ ok: true, changed: true, sheet: 'Απαντήσεις' });
+      }
+      return json_({ ok: true, changed: false, sheet: 'Απαντήσεις' });
+    }
+
+    const choices = { IBAN: 'IBAN', IRIS: 'IRIS', 'ΟΧΙ': 'ΚΑΝΕΝΑ ΔΩΡΟ' };
+    const choice = choices[p.gift];
+    if (!choice) return json_({ ok: true, ignored: true });
     if (!row) {
-      responses.appendRow([new Date(), visitorId, '', '', '', '', '', 'ΚΑΜΙΑ ΕΠΙΛΟΓΗ', '', '', new Date()]);
-      row = responses.getLastRow();
+      createResponse_(responses, visitorId, { choice: choice });
+      return json_({ ok: true, changed: true, sheet: 'Απαντήσεις' });
     }
-
-    if (p.action === 'rsvp') {
-      responses.getRange(row, 3, 1, 5).setValues([[p.name || '', p.phone || '', p.attendance || '', p.guests || '', p.message || '']]);
+    const currentChoice = responses.getRange(row, 8).getDisplayValue();
+    if (currentChoice !== choice) {
+      responses.getRange(row, 8).setValue(choice);
+      markChanged_(responses, row);
+      return json_({ ok: true, changed: true, sheet: 'Απαντήσεις' });
     }
-
-    if (p.action === 'gift_click') {
-      const choices = { IBAN: 'IBAN', IRIS: 'IRIS', 'ΟΧΙ': 'ΚΑΝΕΝΑ ΔΩΡΟ' };
-      responses.getRange(row, 8).setValue(choices[p.gift] || 'ΚΑΜΙΑ ΕΠΙΛΟΓΗ');
-    }
-
-    // Columns 9 (Ποσό) and 10 (Τραπέζι) are intentionally never changed by the site.
-    responses.getRange(row, 11).setValue(new Date());
-    return json_({ ok: true, sheet: 'Απαντήσεις' });
+    return json_({ ok: true, changed: false, sheet: 'Απαντήσεις' });
   } finally {
     lock.releaseLock();
   }
