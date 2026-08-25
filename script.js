@@ -1,12 +1,10 @@
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 window.scrollTo(0,0);window.addEventListener('pageshow',()=>window.scrollTo(0,0));window.addEventListener('beforeunload',()=>window.scrollTo(0,0));
 const ENDPOINT='https://script.google.com/macros/s/AKfycbyx-z_paY1vRoWfbs9kJOEYdmHj7K0cidVq695U_TOFav64Dj_Vds524-MV3NNwxsCIJg/exec';
-const $=s=>document.querySelector(s);let audioCtx,loopTimer,isPlaying=false;
+const $=s=>document.querySelector(s);const soundtrack=new Audio('beautiful-in-white.mp3?v=36');soundtrack.loop=true;soundtrack.preload='auto';let isPlaying=false;
 $('#music').style.zIndex='9999';$('#music').style.pointerEvents='auto';
-function note(freq,when,d=.9){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.001,when);g.gain.linearRampToValueAtTime(.035,when+.08);g.gain.exponentialRampToValueAtTime(.001,when+d);o.connect(g).connect(audioCtx.destination);o.start(when);o.stop(when+d)}
-function loop(){if(!isPlaying)return;const n=audioCtx.currentTime;[261.6,329.6,392,523.2,440,349.2,392,329.6].forEach((f,i)=>note(f,n+i*.55));loopTimer=setTimeout(loop,4400)}
-function play(){audioCtx||=new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();isPlaying=true;$('#music').classList.add('playing');$('#music').classList.remove('muted');$('#music').textContent='♫';loop()}
-function pause(){isPlaying=false;clearTimeout(loopTimer);if(audioCtx){audioCtx.close();audioCtx=null}$('#music').classList.remove('playing');$('#music').classList.add('muted');$('#music').textContent='♪'}
+async function play(){try{await soundtrack.play();isPlaying=true;$('#music').classList.add('playing');$('#music').classList.remove('muted');$('#music').textContent='♫'}catch{isPlaying=false}}
+function pause(){soundtrack.pause();isPlaying=false;$('#music').classList.remove('playing');$('#music').classList.add('muted');$('#music').textContent='♪'}
 $('#envelope').addEventListener('click',()=>{$('#envelope').classList.add('is-open');play();setTimeout(()=>{window.scrollTo(0,0);$('#intro').classList.add('open');$('#content').classList.add('visible');$('#content').removeAttribute('aria-hidden');document.body.classList.remove('locked');$('#music').classList.add('show');requestAnimationFrame(()=>window.scrollTo(0,0))},3800)},{once:true});
 $('#music').addEventListener('click',()=>isPlaying?pause():play());
 const wedding=new Date('2026-11-08T13:00:00+02:00');function tick(){const d=Math.max(0,wedding-Date.now()),v=[Math.floor(d/864e5),Math.floor(d/36e5)%24,Math.floor(d/6e4)%60,Math.floor(d/1e3)%60];['days','hours','minutes','seconds'].forEach((id,i)=>$('#'+id).textContent=String(v[i]).padStart(2,'0'))}tick();setInterval(tick,1000);
