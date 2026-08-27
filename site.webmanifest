@@ -1,0 +1,14 @@
+{
+  "name": "Αχιλλέας & Γεωργία",
+  "short_name": "Α & Γ",
+  "description": "Το ηλεκτρονικό προσκλητήριο γάμου του Αχιλλέα και της Γεωργίας.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f5f0",
+  "theme_color": "#566e55",
+  "icons": [
+    {"src": "android-chrome-192x192.png?v=42", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "android-chrome-512x512.png?v=42", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ]
+}
